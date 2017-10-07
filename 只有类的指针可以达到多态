@@ -99,3 +99,33 @@ C++的精髓之一就是多态性，只有指针或者引用可以达到多态�
 用指针： 
 第一实现多态。 
 第二，在函数调用，传指针参数。不管你的对象或结构参数多么庞大，你用指针，传过去的就是4个字节。如果用对象，参数传递占用的资源就太大了
+
+
+
+class A;
+typedef void (A::*NONSTATICFUNCPTR)(int);    //typedef
+
+class A
+{
+public:
+    void NonStaticFunc(int arg) 
+    {
+        nonStaticMember = arg; 
+        cout<<nonStaticMember<<endl;
+    }
+private:
+    int    nonStaticMember;
+};
+
+int main()
+{
+    NONSTATICFUNCPTR funcPtr= &A::NonStaticFunc;
+
+    A a;
+    (a.*funcPtr)(10);        //通过对象调用
+
+    A *aPtr = new A;
+    (aPtr->*funcPtr)(10);    //通过指针调用
+
+    return 0;
+}
